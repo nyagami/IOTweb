@@ -15,13 +15,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="vi" className='h-full'>
-      <body className='bg-slate-300 h-full'>
+    <html lang="vi">
+      <body className='bg-slate-300'>
           <Providers>
             <Header/>
-            <main className='relative h-5/6'>
+            <div style={{height: 'max-content'}}>
               {children}
-            </main>
+            </div>
             <Footer/>
           </Providers>
       </body>

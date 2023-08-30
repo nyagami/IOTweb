@@ -1,8 +1,14 @@
 "use client";
-import Card, {NumberCard} from "./components/Card";
+import {NumberCard} from "./components/Cards";
 import { useTheme } from "../hooks/useTheme";
 import { useState } from "react";
 import { getRandom } from "../utils/getRandom";
+
+import ApexLineColumnChart from "./components/Charts/LineColumeChart";
+import ApexLineChart from "./components/Charts/LineChart";
+import ApexColumnAreaChart from "./components/Charts/ColumnAreaChart";
+
+import SwitchItem from "../components/Switch";
 
 const Dashboard = () => {
 
@@ -15,7 +21,7 @@ const Dashboard = () => {
     //     setHumidity(getRandom(0, 100));
     //     setLight(getRandom(0, 30));
     // }, 4000);
-    const them = useTheme();
+    const theme = useTheme();
     return (
         <div>
             <div className="flex w-full justify-evenly mt-10 ">
@@ -37,6 +43,27 @@ const Dashboard = () => {
                     icon="wb_sunny"
                     unit="%"
                 />
+            </div>
+            <div className="flex">
+                <div className="w-4/5">
+                    <div><ApexLineColumnChart/></div>
+                    <div><ApexLineChart/></div>
+                    <div><ApexColumnAreaChart/></div>
+                </div>
+                <div>
+                    <div>
+                        <SwitchItem
+                            theme={theme}
+                            label=""
+                        />
+                    </div>
+                    <div>
+                        <SwitchItem
+                            theme={theme}
+                            label=""
+                        />
+                    </div>
+                </div>
             </div>
         </div>
     )
