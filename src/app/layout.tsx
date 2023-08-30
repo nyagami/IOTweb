@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi">
-      <body className='bg-slate-300'>
+      <body className=''>
           <Providers>
             <Header/>
             <div style={{height: 'max-content'}}>

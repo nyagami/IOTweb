@@ -1,7 +1,7 @@
 "use client";
 import {NumberCard} from "./components/Cards";
 import { useTheme } from "../hooks/useTheme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getRandom } from "../utils/getRandom";
 
 import ApexLineColumnChart from "./components/Charts/LineColumeChart";
@@ -16,11 +16,15 @@ const Dashboard = () => {
     const [humidity, setHumidity] = useState(getRandom(0, 100));
     const [light, setLight] = useState(getRandom(0, 30));
 
-    // setInterval(() => {
-    //     setTemporature(getRandom(0, 50));
-    //     setHumidity(getRandom(0, 100));
-    //     setLight(getRandom(0, 30));
-    // }, 4000);
+    useEffect(() => {
+        const randomInterval = setInterval(() => {
+            setTemporature(getRandom(0, 50));
+            setHumidity(getRandom(0, 100));
+            setLight(getRandom(0, 30));
+        }, 4000);
+
+        return () => clearInterval(randomInterval);
+    })
     const theme = useTheme();
     return (
         <div>

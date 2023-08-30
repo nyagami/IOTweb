@@ -33,9 +33,6 @@ const Header = () => {
             className={theme.name}
             isBordered={true}
             isBlurred={true}
-            style={{
-                background: "red"
-            }}
         >
             <NavbarBrand>
                 <Link href='/' color='foreground' className='font-bold'>
@@ -58,24 +55,23 @@ const Header = () => {
                         onClick={() => dispatch(switchTheme())}
                     />
                 </NavbarItem>
-                <Dropdown>
+                <Dropdown className={theme.name}>
                     <DropdownTrigger className="cursor-pointer">
                         <User
                             name={width > 768 ? "Đỗ Hoàng Quân": null}
                             description={(
                                 <Link 
                                     href="/profile" 
-                                    className={theme.name + " font-normal hidden md:block"}>
+                                    className={"text-primary font-normal hidden md:block"}>
                                         @nyagami
                                 </Link>
                             )}
                             avatarProps={{
-                                src: "https://i1.sndcdn.com/avatars-000337262852-um0hwu-t500x500.jpg"
+                                isBordered: true,
+                                src: "https://i1.sndcdn.com/avatars-000337262852-um0hwu-t500x500.jpg",
+                                color: 'primary'
                             }}
-                            className="font-bold text-h"
-                            style={{
-                                color: theme.textColor,
-                            }}
+                            className="font-bold text-foreground"
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions" color='primary' variant="faded" >

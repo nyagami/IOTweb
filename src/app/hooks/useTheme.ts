@@ -1,8 +1,8 @@
 import { theme } from '../theme';
-import { MD3ThemeType } from '../theme/types';
+import { ThemeType } from '../theme/types';
 import { useSettings } from './reduxHooks';
 
-export const useTheme = (): MD3ThemeType => {
+export const useTheme = (): ThemeType => {
 
     const { darkMode } = useSettings();
     if( darkMode) return theme.dark;
