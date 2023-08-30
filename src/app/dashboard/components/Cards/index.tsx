@@ -1,32 +1,12 @@
 import styles from './Card.module.css'
 
-interface CardProps {
-    title: string,
-    description: string,
-    accentColor: string, 
-}
-
-const Card = ({
-    title,
-    description,
-    accentColor
-}: CardProps
-) => { 
-    return (
-        <div
-            className="h-32 w-32 border-radi"
-            style={{backgroundColor: accentColor}}
-        >
-
-        </div>
-    )
-}
-
 interface NumberCardProps {
     title: string,
     num: number;
     icon: string;
     unit: string;
+    backgroundImage?: string,
+    boxShadow?: string,
 }
 
 const NumberCard = ({
@@ -34,20 +14,20 @@ const NumberCard = ({
     num,
     icon,
     unit,
+    backgroundImage,
+    boxShadow,
 }: NumberCardProps) => {
     return (
         <div
-            className={styles.card}
+            className={styles.card + "relative w-5/6 mx-auto flex md:w-80 mb-4 md:mb-0"}
             style={{
                 height: '8rem',
-                width: '20rem',
                 borderRadius: '2rem',
-                display: 'flex',
                 alignItems: 'center',
                 padding: '1rem',
                 backgroundSize: '300% 100%',
-                backgroundImage: 'linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19)',
-                boxShadow: '0 4px 15px 0 rgba(229, 66, 10, 0.75)',
+                backgroundImage: backgroundImage,
+                boxShadow: boxShadow,
                 cursor: 'pointer',
             }}
         >
@@ -89,4 +69,3 @@ const NumberCard = ({
 export {
     NumberCard
 }
-export default Card
