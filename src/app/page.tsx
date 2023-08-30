@@ -1,6 +1,4 @@
+import { redirect } from "next/navigation"
 export default function Home() {
-  return (
-    <main className="bg-none">
-    </main>
-  )
+  redirect('/dashboard');
 }

@@ -80,10 +80,10 @@ const Header = () => {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions" color='primary' variant="faded" >
                         <DropdownItem>
-                            <Link className="w-full" href="/profile">Profile</Link>
+                            <Link className="w-full h-full" href="/profile">Profile</Link>
                         </DropdownItem>
                         <DropdownItem>
-                            <Link href="/dashboard" className="w-full">Dashboard</Link>
+                            <Link href="/dashboard" className="w-full h-full">Dashboard</Link>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
