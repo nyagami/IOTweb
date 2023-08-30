@@ -4,11 +4,11 @@ import { ApexOptions } from "apexcharts";
 
 const series = [
     {
-        name: "Website Blog Visits",
+        name: "Độ sáng",
         data: [670, 720, 770, 690, 900, 970, 1030],
     },
     {
-        name: "Social Media Visits",
+        name: "Độ sáng",
         data: [760, 590, 910, 850, 700, 1050, 920],
     },
 ];
@@ -35,7 +35,6 @@ const chartSettings: ApexOptions = {
         labels: {
             style: {
                 colors: "#6B859E",
-                // opacity: 0.7,
             },
         },
     },
@@ -43,7 +42,6 @@ const chartSettings: ApexOptions = {
         labels: {
             style: {
                 colors: ["#6B859E"],
-                // opacity: 0.7,
             },
         },
     },
@@ -58,7 +56,7 @@ const chartSettings: ApexOptions = {
             shadeIntensity: 1,
             opacityFrom: 0.7,
             opacityTo: 1,
-            stops: [40, 90, 100]
+            stops: [100, 50]
         }
     },
     colors: ["#4D53E0", "#41D5E2"],

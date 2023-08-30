@@ -27,8 +27,10 @@ const Dashboard = () => {
     })
     const theme = useTheme();
     return (
-        <div>
-            <div className="flex w-full justify-evenly mt-10 ">
+        <div style={{
+            backgroundColor: theme.background
+        }}>
+            <div className="flex w-full justify-evenly py-10">
                 <NumberCard
                     title="Nhiệt độ"
                     num={temporature}
@@ -51,8 +53,8 @@ const Dashboard = () => {
             <div className="flex">
                 <div className="w-4/5">
                     <div><ApexLineColumnChart/></div>
-                    <div><ApexLineChart/></div>
                     <div><ApexColumnAreaChart/></div>
+                    <div><ApexLineChart/></div>
                 </div>
                 <div>
                     <div>

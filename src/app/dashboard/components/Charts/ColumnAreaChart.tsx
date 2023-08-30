@@ -3,13 +3,9 @@ import ApexCharts from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 
 const series = [{
-    name: 'Social Media',
-    type: 'column',
-    data: [650, 850, 550, 750, 850, 700, 1050, 1100]
-}, {
-    name: 'Website Blog',
+    name: 'Độ ẩm',
     type: 'area',
-    data: [800, 900, 1050, 1100, 1000, 850, 1050, 1150]
+    data: [80, 90, 50, 46, 60, 85, 50, 45]
 }];
 
 const chartSettings: ApexOptions = {
@@ -33,7 +29,7 @@ const chartSettings: ApexOptions = {
     },
     fill: {
         type: "solid",
-        opacity: [1, 0.5],
+        opacity: [0.5],
     },
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
     markers: {
@@ -55,7 +51,7 @@ const chartSettings: ApexOptions = {
         },
     },
     dataLabels: {
-        enabled: false,
+        enabled: true,
     },
     tooltip: {
         shared: true,
@@ -63,7 +59,7 @@ const chartSettings: ApexOptions = {
         y: {
             formatter: function (y) {
                 if (typeof y !== "undefined") {
-                    return y.toFixed(0) + " visits";
+                    return y.toFixed(0) + "%";
                 }
                 return y;
 

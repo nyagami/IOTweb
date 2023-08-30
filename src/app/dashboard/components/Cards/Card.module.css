@@ -1,0 +1,11 @@
+.card {
+
+}
+
+.card:hover{
+    background-position: 100% 60%;
+    moz-transition: all 0.7s ease-in-out;
+    -o-transition: all 0.7s ease-in-out;
+    -webkit-transition: all 0.7s ease-in-out;
+    transition: all 0.7s ease-in-out;
+}

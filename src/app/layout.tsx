@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className=''>
           <Providers>
             <Header/>
-            <div style={{height: 'max-content'}}>
+            <div>
               {children}
             </div>
             <Footer/>
