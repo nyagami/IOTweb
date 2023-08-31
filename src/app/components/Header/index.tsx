@@ -30,7 +30,7 @@ const Header = () => {
     const {width} = useDemension();
     return (
         <Navbar 
-            className={theme.name}
+            className={theme.name + " bg-background"}
             isBordered={true}
             isBlurred={true}
         >
