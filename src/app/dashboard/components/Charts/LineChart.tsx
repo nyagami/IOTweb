@@ -5,11 +5,11 @@ import { ApexOptions } from "apexcharts";
 const series = [
     {
         name: "Độ sáng",
-        data: [670, 720, 770, 690, 900, 970, 1030],
+        data: [70, 20, 70, 90, 90, 70, 30],
     },
     {
         name: "Độ sáng",
-        data: [760, 590, 910, 850, 700, 1050, 920],
+        data: [60, 90, 10, 50, 70, 50, 20],
     },
 ];
 
@@ -68,6 +68,9 @@ const chartSettings: ApexOptions = {
     legend: {
         show: true,
         horizontalAlign: "center",
+        labels: {
+            colors: "#6B859E",
+        }
     },
 };
 

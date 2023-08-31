@@ -13,7 +13,7 @@ const series = [{
 }];
 
 const chartSettings: ApexOptions = {
-  colors: ["#F7F8FB", "#FF5668"],
+  colors: ["#d3daed", "#FF5668"],
   chart: {
     height: 350,
     type: 'line',
@@ -45,9 +45,21 @@ const chartSettings: ApexOptions = {
       },
     },
   },
+  yaxis: {
+    labels: {
+      style: {
+        colors: "#6B859E",
+      }
+    }
+  },
   fill: {
     type: "solid",
     opacity: 1,
+  },
+  legend: {
+    labels: {
+      colors: "#6B859E"
+    }
   }
 };
 

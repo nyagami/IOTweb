@@ -1,5 +1,4 @@
 "use client";
-import {NumberCard} from "./components/Cards";
 import { useTheme } from "../hooks/useTheme";
 import { useEffect, useState } from "react";
 import { getRandom } from "../utils/getRandom";
@@ -8,7 +7,9 @@ import ApexLineColumnChart from "./components/Charts/LineColumeChart";
 import ApexLineChart from "./components/Charts/LineChart";
 import ApexColumnAreaChart from "./components/Charts/ColumnAreaChart";
 
+import { NumberCard } from "./components/Cards";
 import SwitchItem from "../components/Switch";
+import LightItem from "./components/Lights";
 
 const Dashboard = () => {
 
@@ -61,25 +62,23 @@ const Dashboard = () => {
                     boxShadow="0 4px 15px 0 rgba(229, 66, 10, 0.75)"
                 />
             </div>
-            <div className="flex">
-                <div className="w-4/5">
-                    <div><ApexLineColumnChart/></div>
-                    <div><ApexColumnAreaChart/></div>
-                    <div><ApexLineChart/></div>
-                </div>
+            <div className="flex flex-row-reverse justify-end">
                 <div>
                     <div>
-                        <SwitchItem
+                        <LightItem
                             theme={theme}
-                            label=""
                         />
                     </div>
                     <div>
-                        <SwitchItem
+                        <LightItem
                             theme={theme}
-                            label=""
                         />
                     </div>
+                </div>
+                <div className="w-4/5">
+                    <div><ApexLineColumnChart /></div>
+                    <div><ApexColumnAreaChart /></div>
+                    <div><ApexLineChart /></div>
                 </div>
             </div>
         </div>
