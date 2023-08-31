@@ -15,7 +15,6 @@ const series = [{
 const chartSettings: ApexOptions = {
   colors: ["#d3daed", "#FF5668"],
   chart: {
-    height: 350,
     type: 'line',
     toolbar: {
       show: false,

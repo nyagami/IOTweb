@@ -62,8 +62,8 @@ const Dashboard = () => {
                     boxShadow="0 4px 15px 0 rgba(229, 66, 10, 0.75)"
                 />
             </div>
-            <div className="flex flex-row-reverse justify-end">
-                <div>
+            <div className="md:flex md:flex-row-reverse md:justify-end">
+                <div className="flex justify-center md:block">
                     <div>
                         <LightItem
                             theme={theme}
@@ -75,7 +75,7 @@ const Dashboard = () => {
                         />
                     </div>
                 </div>
-                <div className="w-4/5">
+                <div className="w-full md:w-4/5">
                     <div><ApexLineColumnChart /></div>
                     <div><ApexColumnAreaChart /></div>
                     <div><ApexLineChart /></div>
