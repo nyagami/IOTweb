@@ -7,9 +7,8 @@ import ApexLineColumnChart from "./components/Charts/LineColumeChart";
 import ApexLineChart from "./components/Charts/LineChart";
 import ApexColumnAreaChart from "./components/Charts/ColumnAreaChart";
 
-import { Chip, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 import { NumberCard } from "./components/Cards";
-import SwitchItem from "../components/Switch";
 import LightItem from "./components/Lights";
 
 const Dashboard = () => {
@@ -64,7 +63,7 @@ const Dashboard = () => {
                 />
             </div>
             <div className="md:flex md:flex-row-reverse md:justify-end md:pl-4">
-                <div className="flex justify-center md:block">
+                <div className="flex justify-center md:w-2/6 md:block">
                     <div>
                         <LightItem
                             theme={theme}
@@ -76,7 +75,7 @@ const Dashboard = () => {
                         />
                     </div>
                 </div>
-                <div className="w-full md:w-4/5">
+                <div className="w-full md:w-4/6">
                     <Divider/>
                     <div>
                         <ApexLineColumnChart />
