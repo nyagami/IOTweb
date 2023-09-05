@@ -5,10 +5,6 @@ import { ApexOptions } from "apexcharts";
 const series = [
     {
         name: "Độ sáng",
-        data: [70, 20, 70, 90, 90, 70, 30],
-    },
-    {
-        name: "Độ sáng",
         data: [60, 90, 10, 50, 70, 50, 20],
     },
 ];
@@ -59,7 +55,7 @@ const chartSettings: ApexOptions = {
             stops: [100, 50]
         }
     },
-    colors: ["#4D53E0", "#41D5E2"],
+    colors: ["#41D5E2"],
     chart: {
         toolbar: {
             show: false,
