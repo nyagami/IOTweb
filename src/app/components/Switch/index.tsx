@@ -1,8 +1,8 @@
-import { MD3ThemeType } from "@/app/theme/types"
+import { ThemeType } from "@/app/theme/types"
 import { Switch, SwitchProps } from "@nextui-org/react"
 
 interface SwitchItemProps extends SwitchProps{
-    theme: MD3ThemeType,
+    theme: ThemeType,
     label?: string,
 }
 

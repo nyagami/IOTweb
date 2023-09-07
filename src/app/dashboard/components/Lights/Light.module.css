@@ -1,0 +1,9 @@
+.lightItem {
+    font-size: 3rem;
+}
+
+@media (min-width: 768px) {
+    .lightItem {
+        font-size: 10rem;
+    }
+}
