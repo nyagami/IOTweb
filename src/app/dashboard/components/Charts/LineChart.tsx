@@ -4,35 +4,44 @@ import { ApexOptions } from "apexcharts";
 
 const series = [
     {
+        name: 'Nhiệt độ',
+        type: 'line',
+        data: [23, 42, 35, 27, 39, 22, 17, 31, 26]
+    },
+    {
+        name: 'Độ ẩm',
+        type: 'line',
+        data: [80, 90, 50, 46, 60, 85, 50, 45, 89]
+    },
+    {
         name: "Độ sáng",
-        data: [60, 90, 10, 50, 70, 50, 20],
+        type: "line",
+        data: [60, 90, 10, 50, 70, 50, 20, 31, 22],
     },
 ];
 
 const chartSettings: ApexOptions = {
+    colors: ["#FF5668", "#4D53E0", "#ffca7a"],
     dataLabels: {
-        enabled: false,
-    },
-    stroke: {
-        curve: "smooth",
-        width: 2,
-    },
-    xaxis: {
-        type: "category",
-        categories: [
-            "Mon",
-            "Tue",
-            "Wed",
-            "Thu",
-            "Fri",
-            "Sat",
-            "Sun",
-        ],
-        labels: {
-            style: {
-                colors: "#6B859E",
-            },
+        enabled: true,
+        enabledOnSeries: [0, 1, 2],
+        style: {
+          fontSize: '10px',
+          fontWeight: 500,
         },
+        background: {
+          borderWidth: 0,
+        },
+      },
+    stroke: {
+        curve: ["straight", "smooth", "smooth"],
+        width: [3, 3, 3]
+    },
+    chart: {
+        height: 1000,
+        toolbar: {
+            show: false
+        }
     },
     yaxis: {
         labels: {
@@ -41,31 +50,9 @@ const chartSettings: ApexOptions = {
             },
         },
     },
-    tooltip: {
-        x: {
-            show: false,
-        },
-    },
-    fill: {
-        type: "gradient",
-        gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.7,
-            opacityTo: 1,
-            stops: [100, 50]
-        }
-    },
-    colors: ["#41D5E2"],
-    chart: {
-        toolbar: {
-            show: false,
-        },
-    },
-    legend: {
-        show: true,
-        horizontalAlign: "center",
+    xaxis: {
         labels: {
-            colors: "#6B859E",
+            show: false
         }
     },
 };
@@ -75,7 +62,7 @@ export default function ApexLineChart() {
         <ApexCharts
             options={chartSettings}
             series={series}
-            type="area"
+            type="line"
             height={300}
         />
     );

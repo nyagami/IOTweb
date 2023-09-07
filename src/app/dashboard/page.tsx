@@ -105,25 +105,20 @@ const Dashboard = () => {
                         <LightItem
                             theme={theme}
                             icon="lightbulb"
+                            active={false}
                         />
                     </div>
                     <div>
                         <LightItem
                             theme={theme}
                             icon="wind_power"
+                            active={false}
                         />
                     </div>
                 </div>
                 <div className="w-full md:w-4/6">
                     <Divider/>
-                    <div>
-                        <ApexLineColumnChart />
-                    </div>
-                    <Divider/>
-                    <div><ApexColumnAreaChart /></div>
-                    <Divider/>
                     <div><ApexLineChart /></div>
-                    <Divider/>
                 </div>
             </div>
         </div>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, getKeyValue } from "@nextui-org/react"
-import { useTheme } from "@/app/hooks/useTheme";
 
 export interface Column {
     key: string,
