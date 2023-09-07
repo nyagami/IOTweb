@@ -3,9 +3,7 @@ import { useTheme } from "../hooks/useTheme";
 import { useEffect, useState } from "react";
 import { getRandom } from "../utils/getRandom";
 
-import ApexLineColumnChart from "./components/Charts/LineColumeChart";
 import ApexLineChart from "./components/Charts/LineChart";
-import ApexColumnAreaChart from "./components/Charts/ColumnAreaChart";
 
 import { Divider } from "@nextui-org/react";
 import { NumberCard } from "./components/Cards";
@@ -118,7 +116,7 @@ const Dashboard = () => {
                 </div>
                 <div className="w-full md:w-4/6">
                     <Divider/>
-                    <div><ApexLineChart /></div>
+                    <div><ApexLineChart/></div>
                 </div>
             </div>
         </div>

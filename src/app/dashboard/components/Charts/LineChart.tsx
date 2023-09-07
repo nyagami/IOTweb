@@ -38,7 +38,6 @@ const chartSettings: ApexOptions = {
         width: [3, 3, 3]
     },
     chart: {
-        height: 1000,
         toolbar: {
             show: false
         }
@@ -55,6 +54,11 @@ const chartSettings: ApexOptions = {
             show: false
         }
     },
+    legend: {
+        labels: {
+            colors: "#6B859E"
+        }
+    }
 };
 
 export default function ApexLineChart() {
@@ -63,7 +67,7 @@ export default function ApexLineChart() {
             options={chartSettings}
             series={series}
             type="line"
-            height={300}
+            height={400}
         />
     );
 }
