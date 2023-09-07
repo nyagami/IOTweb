@@ -67,11 +67,13 @@ const Dashboard = () => {
                     <div>
                         <LightItem
                             theme={theme}
+                            icon="lightbulb"
                         />
                     </div>
                     <div>
                         <LightItem
                             theme={theme}
+                            icon="wind_power"
                         />
                     </div>
                 </div>

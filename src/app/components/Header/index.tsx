@@ -81,6 +81,12 @@ const Header = () => {
                         <DropdownItem>
                             <Link href="/dashboard" className="w-full h-full">Dashboard</Link>
                         </DropdownItem>
+                        <DropdownItem>
+                            <Link href="/history/sensor" className="w-full h-full">Dữ liệu cảm biến</Link>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <Link href="/history/action" className="w-full h-full">Lịch sử bật tắt</Link>
+                        </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
