@@ -21,7 +21,7 @@ const HistoryTable = ({
     return (
         <div className="py-10">
             <div className="flex justify-center w-full mb-5">
-                <Table aria-label="sensor table" className="w-1/2">
+                <Table aria-label="sensor table" className="w-full md:w-1/2">
                     <TableHeader columns={columns}>
                         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
                     </TableHeader>
