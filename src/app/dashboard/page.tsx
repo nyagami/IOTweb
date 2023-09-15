@@ -8,6 +8,8 @@ import ApexLineChart from "./components/Charts/LineChart";
 import { Divider } from "@nextui-org/react";
 import { NumberCard } from "./components/Cards";
 import LightItem from "./components/Lights";
+import { SensorData } from "../api/sensor/route";
+import { DeviceStatus } from "../api/device/route";
 
 interface TemporatureColor { 
     backgroundImage: string,
@@ -47,21 +49,28 @@ const getTemporatureColor = (temporature: number): TemporatureColor => {
 
 const Dashboard = () => {
 
-    const [temporature, setTemporature] = useState(getRandom(-10, 70));
-    const [humidity, setHumidity] = useState(getRandom(50, 100));
-    const [light, setLight] = useState(getRandom(10, 100));
-
+    const [temperature, setTemperature] = useState(0);
+    const [humidity, setHumidity] = useState(0);
+    const [light, setLight] = useState(0);
+    const [sensorDatas, setSensorDatas] = useState([] as SensorData[]);
+    const [deviceStatus, setDeviceStatus] = useState({light: false, fan: false} as DeviceStatus)
     useEffect(() => {
-        const randomInterval = setInterval(() => {
-            setTemporature(getRandom(-10, 70));
-            setHumidity(getRandom(50, 100));
-            setLight(getRandom(10, 30));
-        }, 4000);
-
+        const getData = async () => {
+            const res = await fetch('/api/sensor');
+            const data = await res.json();
+            return data.data as SensorData[];
+        }
+        const randomInterval = setInterval(async () => {
+            const data = await getData();
+            setTemperature(data[9].temperature);
+            setHumidity(data[9].humidity);
+            setLight(data[9].light);
+            setSensorDatas(data);
+        }, 5000);
         return () => clearInterval(randomInterval);
     })
     const theme = useTheme();
-    const temporatureColor = getTemporatureColor(temporature);
+    const temporatureColor = getTemporatureColor(temperature);
     return (
         <div style={{
             backgroundColor: theme.background
@@ -74,7 +83,7 @@ const Dashboard = () => {
             >
                 <NumberCard
                     title="Nhiệt độ"
-                    num={temporature}
+                    num={temperature}
                     icon="thermostat"
                     unit="°C"
                     backgroundImage={temporatureColor.backgroundImage}
@@ -103,20 +112,24 @@ const Dashboard = () => {
                         <LightItem
                             theme={theme}
                             icon="lightbulb"
-                            active={false}
+                            active={deviceStatus.light}
                         />
                     </div>
                     <div>
                         <LightItem
                             theme={theme}
                             icon="wind_power"
-                            active={false}
+                            active={deviceStatus.fan}
                         />
                     </div>
                 </div>
                 <div className="w-full md:w-4/6">
                     <Divider/>
-                    <div><ApexLineChart/></div>
+                    <div>
+                        <ApexLineChart
+                            sensorDatas={sensorDatas}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

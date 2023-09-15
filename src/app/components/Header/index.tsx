@@ -75,16 +75,16 @@ const Header = () => {
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions" color='primary' variant="faded" >
-                        <DropdownItem>
+                        <DropdownItem textValue="Profile">
                             <Link className="w-full h-full" href="/profile">Profile</Link>
                         </DropdownItem>
-                        <DropdownItem>
+                        <DropdownItem textValue="Dashboard">
                             <Link href="/dashboard" className="w-full h-full">Dashboard</Link>
                         </DropdownItem>
-                        <DropdownItem>
+                        <DropdownItem textValue="Dữ liệu cảm biến">
                             <Link href="/history/sensor" className="w-full h-full">Dữ liệu cảm biến</Link>
                         </DropdownItem>
-                        <DropdownItem>
+                        <DropdownItem textValue="Lịch sử bật tắt">
                             <Link href="/history/action" className="w-full h-full">Lịch sử bật tắt</Link>
                         </DropdownItem>
                     </DropdownMenu>

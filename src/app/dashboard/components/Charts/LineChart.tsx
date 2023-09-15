@@ -1,67 +1,78 @@
 import React from "react";
 import ApexCharts from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { SensorData } from "@/app/api/sensor/route";
 
-const series = [
-    {
-        name: 'Nhiệt độ',
-        type: 'line',
-        data: [23, 42, 35, 27, 39, 22, 17, 31, 26]
-    },
-    {
-        name: 'Độ ẩm',
-        type: 'line',
-        data: [80, 90, 50, 46, 60, 85, 50, 45, 89]
-    },
-    {
-        name: "Độ sáng",
-        type: "line",
-        data: [60, 90, 10, 50, 70, 50, 20, 31, 22],
-    },
-];
+interface ChartProps {
+    sensorDatas: SensorData [],
+}
 
-const chartSettings: ApexOptions = {
-    colors: ["#FF5668", "#4D53E0", "#ffca7a"],
-    dataLabels: {
-        enabled: true,
-        enabledOnSeries: [0, 1, 2],
-        style: {
-          fontSize: '10px',
-          fontWeight: 500,
-        },
-        background: {
-          borderWidth: 0,
-        },
-      },
-    stroke: {
-        curve: ["straight", "smooth", "smooth"],
-        width: [3, 3, 3]
-    },
-    chart: {
-        toolbar: {
-            show: false
-        }
-    },
-    yaxis: {
-        labels: {
+export default function ApexLineChart({
+    sensorDatas,
+}: ChartProps) {
+    const chartSettings: ApexOptions = {
+        colors: ["#FF5668", "#4D53E0", "#ffca7a"],
+        dataLabels: {
+            enabled: true,
+            enabledOnSeries: [0, 1, 2],
             style: {
-                colors: ["#6B859E"],
+              fontSize: '10px',
+              fontWeight: 500,
             },
+            background: {
+              borderWidth: 0,
+            },
+          },
+        stroke: {
+            curve: ["straight", "smooth", "smooth"],
+            width: [3, 3, 3]
         },
-    },
-    xaxis: {
-        labels: {
-            show: false
+        chart: {
+            toolbar: {
+                show: false
+            }
+        },
+        xaxis: {
+            categories: sensorDatas.map(sd => sd.time),
+            labels: {
+                show: true,
+                style: {
+                    colors: "#6B859E",
+                }
+            }
+        },
+        yaxis: {
+            labels: {
+                style: {
+                    colors: "#6B859E",
+                },
+            },
+            min: -10,
+            max: 100,
+        },
+        legend: {
+            labels: {
+                colors: "#6B859E"
+            }
         }
-    },
-    legend: {
-        labels: {
-            colors: "#6B859E"
+    };
+    const series = [
+        {
+            name: "Nhiệt độ",
+            type: "line",
+            data: sensorDatas.map(sd => sd.temperature),
+        },
+        {
+            name: "Độ ẩm",
+            type: "line",
+            data: sensorDatas.map(sd => sd.humidity),
+        },
+        {
+            name: "Độ sáng",
+            type: "line",
+            data: sensorDatas.map(sd => sd.light),
         }
-    }
-};
-
-export default function ApexLineChart() {
+    ]
     return (
         <ApexCharts
             options={chartSettings}
