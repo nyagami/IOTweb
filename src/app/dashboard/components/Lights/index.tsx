@@ -12,10 +12,11 @@ interface LightItemProps {
 const LightItem = ({
     theme,
     icon,
-    active = false,
+    active,
 }: LightItemProps
 ) => {
     const [status, setStatus] = useState(active);
+
     return (
         <div className="h-28 w-36 md:h-64 md:w-5/6 bg-primary-300 pt-4 px-4 m-8 rounded-2xl">
             <SwitchItem
