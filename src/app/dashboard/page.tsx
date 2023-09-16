@@ -64,7 +64,7 @@ const Dashboard = () => {
     }, []);
     useEffect(() => {
         const updateInterval = setInterval(async () => {
-            const data = await getData();
+            const data = (await getData()).reverse();
             setTemperature(data[data.length - 1].temperature);
             setTemperatureColor(getTemporatureColor(data[data.length - 1].temperature));
             setHumidity(data[data.length - 1].humidity);

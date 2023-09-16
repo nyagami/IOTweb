@@ -11,7 +11,6 @@ export interface HistoryTableProps {
     records: Record<string, any>[],
 }
 
-
 const HistoryTable = ({
     columns,
     records

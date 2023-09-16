@@ -9,7 +9,8 @@ interface ChartProps {
 
 export default function ApexLineChart({
     sensorDatas,
-}: ChartProps) {
+}: ChartProps
+) {
     const chartSettings: ApexOptions = {
         colors: ["#FF5668", "#4D53E0", "#ffca7a"],
         dataLabels: {
@@ -33,7 +34,7 @@ export default function ApexLineChart({
             }
         },
         xaxis: {
-            categories: sensorDatas.map(sd => sd.time),
+            categories: sensorDatas.map(sd => sd.time.split(' ')[1]),
             labels: {
                 show: true,
                 style: {

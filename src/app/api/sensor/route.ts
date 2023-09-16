@@ -17,6 +17,10 @@ export interface SensorData {
     time: string,
 }
 
+const parseUTC = (time: Date | undefined): string => {
+    return dayjs.utc(time).format("YYYY-MM-DD HH:mm:ss");
+} 
+
 export async function GET(req: NextRequest) {
     const num = Number(req.nextUrl.searchParams.get("num"));
     if(!num){
@@ -27,7 +31,7 @@ export async function GET(req: NextRequest) {
         });
         return NextResponse.json({
             ...latest,
-            time: dayjs.utc(latest?.time).format("HH:mm:ss")
+            time: parseUTC(latest?.time)
         });
     }else{
         const data = await prisma.sensorStatus.findMany({
@@ -40,9 +44,9 @@ export async function GET(req: NextRequest) {
             data.map(sd => {
                 return {
                     ...sd,
-                    time: dayjs.utc(sd?.time).format("HH:mm:ss")
+                    time: parseUTC(sd.time)
                 }
-            }).reverse()
+            })
         )
     }
 }
