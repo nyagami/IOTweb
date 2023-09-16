@@ -70,7 +70,7 @@ const Dashboard = () => {
             setHumidity(data[data.length - 1].humidity);
             setLight(data[data.length - 1].light);
             setSensorDatas(data);
-        }, 5000);
+        }, 10000);
         fetch("/api/device")
             .then(res => res.json())
             .then(data =>{
