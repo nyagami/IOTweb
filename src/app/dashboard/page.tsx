@@ -58,23 +58,22 @@ const Dashboard = () => {
         }
     }, []);
     const getData = useCallback(async () => {
-        const res = await fetch('/api/sensor');
+        const res = await fetch('/api/sensor?num=10');
         const data = await res.json();
-        return data.data as SensorData[];
+        return data as SensorData[];
     }, []);
     useEffect(() => {
         const updateInterval = setInterval(async () => {
             const data = await getData();
-            setTemperature(data[9].temperature);
-            setTemperatureColor(getTemporatureColor(data[9].temperature));
-            setHumidity(data[9].humidity);
-            setLight(data[9].light);
+            setTemperature(data[data.length - 1].temperature);
+            setTemperatureColor(getTemporatureColor(data[data.length - 1].temperature));
+            setHumidity(data[data.length - 1].humidity);
+            setLight(data[data.length - 1].light);
             setSensorDatas(data);
         }, 5000);
         fetch("/api/device")
             .then(res => res.json())
             .then(data =>{
-                console.log(data);
                 setDeviceStatus(data)
             });
         return () => clearInterval(updateInterval);

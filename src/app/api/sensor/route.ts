@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRandom } from "@/app/utils/getRandom";
+import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc'
+import tz from 'dayjs/plugin/timezone'
+import SensorData from "@/app/history/sensor/page";
+
+dayjs.extend(utc)
+dayjs.extend(tz)
+
+const prisma = new PrismaClient();
 
 export interface SensorData { 
     temperature: number,
@@ -9,23 +17,32 @@ export interface SensorData {
     time: string,
 }
 
-const getData = (): SensorData => {
-    return {
-        temperature: getRandom(-10, 70),
-        humidity: getRandom(30, 100),
-        light: getRandom(0, 100),
-        time: dayjs().format('HH:mm:ss'),
-    }
-}
-
-let initData: SensorData[] = [];
-for(let i = 0; i < 10; i++) {
-    initData.push(getData());
-}
 export async function GET(req: NextRequest) {
-    initData = initData.slice(1);
-    initData.push(getData());
-    return NextResponse.json({
-        data: initData,
-    })
+    const num = Number(req.nextUrl.searchParams.get("num"));
+    if(!num){
+        const latest = await prisma.sensorStatus.findFirst({
+            orderBy: {
+                time: 'desc'
+            }
+        });
+        return NextResponse.json({
+            ...latest,
+            time: dayjs.utc(latest?.time).format("HH:mm:ss")
+        });
+    }else{
+        const data = await prisma.sensorStatus.findMany({
+            orderBy: {
+                time: 'desc'
+            },
+            take: num,
+        });
+        return NextResponse.json(
+            data.map(sd => {
+                return {
+                    ...sd,
+                    time: dayjs.utc(sd?.time).format("HH:mm:ss")
+                }
+            })
+        )
+    }
 }
