@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
                     ...sd,
                     time: dayjs.utc(sd?.time).format("HH:mm:ss")
                 }
-            })
+            }).reverse()
         )
     }
 }
