@@ -1,15 +1,14 @@
 "use client";
 import { useTheme } from "../hooks/useTheme";
 import { useCallback, useEffect, useState } from "react";
-import { getRandom } from "../utils/getRandom";
-
+import { io } from 'socket.io-client'
 import ApexLineChart from "./components/Charts/LineChart";
 
 import { Divider } from "@nextui-org/react";
 import { NumberCard } from "./components/Cards";
 import LightItem from "./components/Lights";
 import { SensorData } from "../api/sensor/route";
-import { DeviceStatus } from "../api/device/route";
+import { DeviceStatus } from "../api/action/route";
 
 interface TemporatureColor {
     backgroundImage: string,
@@ -71,11 +70,19 @@ const Dashboard = () => {
             setLight(data[data.length - 1].light);
             setSensorDatas(data);
         }, 10000);
-        fetch("/api/device")
+        fetch("/api/action")
             .then(res => res.json())
             .then(data =>{
                 setDeviceStatus(data)
             });
+        const socket = io();
+        socket.on("sensor", (data) => {
+            console.log("sensor", data);
+        })
+        socket.on("action", (data) => {
+            console.log("action", data);
+        })
+        socket.emit("request-action", {light: "on"});
         return () => clearInterval(updateInterval);
     }, []);
     
