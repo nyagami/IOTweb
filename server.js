@@ -4,7 +4,12 @@ const next = require('next')
 
 const { Server } = require('socket.io')
 const { PrismaClient } = require('@prisma/client')
+const dayjs = require('dayjs')
+const utc  = require('dayjs/plugin/utc')
 const mqtt = require('mqtt');
+
+const prisma = new PrismaClient();
+dayjs.extend(utc)
  
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
@@ -27,6 +32,7 @@ app.prepare().then(() => {
       res.end('internal server error')
     }
   })
+  server
     .once('error', (err) => {
       console.error(err)
       process.exit(1)
@@ -37,19 +43,8 @@ app.prepare().then(() => {
 
   const io = new Server(server);
 
-  io.on("connection", (socket) => {
-    socket.on("request-action", (data) => {
-      console.log(data);
-    })
-  });
-
   const mqttClient = mqtt.connect("mqtt://localhost:1883");
-  mqttClient.on("connect", () => {
-    mqttClient.subscribe(["sensor", "device"], () => {
-      console.log("mqtt client subcribe to sensor and action topics");
-    })
-  });
-  mqttClient.on("message", (topic, payload) => {
+  mqttClient.on("message", async (topic, payload) => {
     let data = {};
     try{
       data = JSON.parse(payload.toString());
@@ -58,11 +53,23 @@ app.prepare().then(() => {
     }
     if(!data) return;
     if(topic === "sensor"){
-      io.emit("sensor", data);
+      if(data.temperature && data.humidity && data.light){
+        const now = new Date(dayjs().utc(true).toISOString());
+        const savedData = await prisma.sensorStatus.create({
+          data: {
+            ...data,
+            time: now
+          }
+        });
+        io.emit("sensor", savedData);
+      }
     }else if(topic === "device"){
-      io.emit("action", data);
+      // io.emit("action", data);
     }else{
       console.log("unknown topic", topic);
     }
+  })
+  mqttClient.on("error", (error) => {
+    console.log(error);
   })
 })

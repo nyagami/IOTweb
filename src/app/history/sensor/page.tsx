@@ -1,14 +1,23 @@
 "use client"
 import { useState, useEffect } from 'react'
 import HistoryTable from "../components/HistoryTable"
-import { SensorData } from '@/app/api/sensor/route'
+import { SensorData } from '@/app/api/sensor/route';
+import { parseUTC } from '@/app/utils/parseUTCTime';
 
-export default function SensorData(){
+export default function SensorDataPage(){
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>();
     useEffect(() => {
         fetch('/api/sensor?num=100')
             .then(res => res.json())
-            .then(data => setSensorDatas(data));
+            .then((data: SensorData[]) => {
+                data = data.map((sd) => {
+                    return {
+                        ...sd,
+                        time: parseUTC(sd.time)
+                    }
+                })
+                setSensorDatas(data);
+            });
     }, []);
     return (
         <div>

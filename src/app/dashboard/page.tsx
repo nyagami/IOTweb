@@ -1,6 +1,6 @@
 "use client";
 import { useTheme } from "../hooks/useTheme";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { io } from 'socket.io-client'
 import ApexLineChart from "./components/Charts/LineChart";
 
@@ -9,6 +9,7 @@ import { NumberCard } from "./components/Cards";
 import LightItem from "./components/Lights";
 import { SensorData } from "../api/sensor/route";
 import { DeviceStatus } from "../api/action/route";
+import { parseUTC } from "../utils/parseUTCTime";
 
 interface TemporatureColor {
     backgroundImage: string,
@@ -17,16 +18,16 @@ interface TemporatureColor {
 
 const Dashboard = () => {
 
-    const [temperature, setTemperature] = useState<number>();
+    const [temperature, setTemperature] = useState<number>(0);
     const [temporatureColor, setTemperatureColor] = useState({
         backgroundImage: "linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7)",
         boxShadow: "0 4px 15px 0 rgba(116, 79, 168, 0.75)",
     })
-    const [humidity, setHumidity] = useState<number>();
-    const [light, setLight] = useState<number>();
-    const [sensorDatas, setSensorDatas] = useState<SensorData[]>();
+    const [humidity, setHumidity] = useState<number>(0);
+    const [light, setLight] = useState<number>(0);
+    const [sensorDatas, setSensorDatas] = useState<SensorData[]>([]);
     const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>();
-    const getTemporatureColor = useCallback((temporature: number): TemporatureColor => {
+    const getTemperatureColor = useCallback((temporature: number): TemporatureColor => {
         if (temporature < 0) {
             return {
                 backgroundImage: "linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376)",
@@ -58,43 +59,56 @@ const Dashboard = () => {
     }, []);
     const getData = useCallback(async () => {
         const res = await fetch('/api/sensor?num=10');
-        const data = await res.json();
+        const data = (await res.json())?.map((sd: SensorData) => {
+            return {
+                ...sd,
+                time: parseUTC(sd.time)
+            }
+        });
         return data as SensorData[];
     }, []);
     useEffect(() => {
-        const updateInterval = setInterval(async () => {
-            const data = (await getData()).reverse();
+        getData().then(data => {
+            data = data.reverse();
             setTemperature(data[data.length - 1].temperature);
-            setTemperatureColor(getTemporatureColor(data[data.length - 1].temperature));
+            setTemperatureColor(getTemperatureColor(data[data.length - 1].temperature));
             setHumidity(data[data.length - 1].humidity);
             setLight(data[data.length - 1].light);
             setSensorDatas(data);
-        }, 10000);
+        });
         fetch("/api/action")
             .then(res => res.json())
             .then(data =>{
                 setDeviceStatus(data)
             });
+    }, []);
+
+    useEffect(() => {
         const socket = io();
-        socket.on("sensor", (data) => {
-            console.log("sensor", data);
-        })
         socket.on("action", (data) => {
             console.log("action", data);
         })
-        socket.emit("request-action", {light: "on"});
-        return () => clearInterval(updateInterval);
-    }, []);
+        socket.on("sensor", (data: SensorData) => {
+            data.time = parseUTC(data.time);
+            setTemperature(data.temperature);
+            setTemperatureColor(getTemperatureColor(data.temperature));
+            setHumidity(data.humidity);
+            setLight(data.light);
+            let datas = sensorDatas.slice(-9).concat([data]);
+            setSensorDatas(datas);
+        })
+
+        return () => {
+            socket.disconnect();
+        }
+    }, [sensorDatas])
     
     const theme = useTheme();
     return (
         <div style={{
             backgroundColor: theme.background
         }}>
-            {
-                (temperature && humidity && light)
-                ?
-                    <div
+            <div
                         className="block w-full md:flex justify-evenly py-10"
                         style={{
                             padding: 'auto'
@@ -125,8 +139,6 @@ const Dashboard = () => {
                             boxShadow="0 4px 15px 0 rgba(229, 66, 10, 0.75)"
                         />
                     </div>
-                : null
-            }
             <div className="md:flex md:flex-row-reverse md:justify-end md:pl-4">
                 {
                     deviceStatus ?
@@ -150,15 +162,11 @@ const Dashboard = () => {
                 }
                 <div className="w-full md:w-4/6">
                     <Divider />
-                    {
-                        sensorDatas ? 
-                            <div>
-                                <ApexLineChart
-                                    sensorDatas={sensorDatas}
-                                />
-                            </div>
-                        : null
-                    }
+                        <div>
+                            <ApexLineChart
+                                sensorDatas={sensorDatas}
+                            />
+                        </div>
                 </div>
             </div>
         </div>

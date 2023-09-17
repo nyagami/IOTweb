@@ -1,5 +1,5 @@
 import React from "react";
-import ApexCharts from "react-apexcharts";
+import ReactApexChart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { SensorData } from "@/app/api/sensor/route";
 
@@ -75,7 +75,7 @@ export default function ApexLineChart({
         }
     ]
     return (
-        <ApexCharts
+        <ReactApexChart
             options={chartSettings}
             series={series}
             type="line"
