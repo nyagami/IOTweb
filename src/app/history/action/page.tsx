@@ -1,7 +1,9 @@
 "use client"
+import { useEffect, useState } from "react"
 import HistoryTable from "../components/HistoryTable"
+import { parseUTC } from "@/app/utils/parseUTCTime";
 
-interface ActionRecord { 
+interface ActionHistory { 
     id: string,
     device: string,
     status: string,
@@ -9,14 +11,20 @@ interface ActionRecord {
 }
 
 export default function Action(){ 
-    const records: ActionRecord[] = [ 
-        {
-            id: 'a',
-            device: 'xP-123',
-            status: 'off',
-            time: '20-10-2023'
-        }
-    ]
+    const [actionHistories, setActionHistories] = useState<ActionHistory[]>([]);
+    useEffect(() => {
+        fetch("/api/action?num=100")
+            .then(res => res.json())
+            .then((data: ActionHistory[]) => {
+                data = data.map((ah) => {
+                    return {
+                        ...ah,
+                        time: parseUTC(ah.time)
+                    }
+                });
+                setActionHistories(data);
+            })
+    }, []);
     return (
         <div>
             <HistoryTable
@@ -26,7 +34,7 @@ export default function Action(){
                     {key: 'status', label: 'TRẠNG THÁI'},
                     {key: 'time', label: 'THỜI GIAN'}
                 ]}
-                records={records}
+                records={actionHistories}
             />
         </div>
     )

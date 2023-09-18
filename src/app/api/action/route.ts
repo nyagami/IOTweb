@@ -1,14 +1,20 @@
-import { getRandom } from "@/app/utils/getRandom";
 import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 export interface DeviceStatus { 
-    light: boolean,
-    fan: boolean,
+    name: string,
+    status: string,
+    time: string,
 }
 
 export async function GET(req: NextRequest) {
-    return NextResponse.json({
-        light: Boolean(getRandom(0, 3)),
-        fan: Boolean(getRandom(0, 3))
-    } as DeviceStatus)
+    const num = Number(req.nextUrl.searchParams.get("num")) || 10;
+    const data = await prisma.sensorStatus.findMany({
+        orderBy: {
+            time: 'desc'
+        },
+        take: num,
+    });
+    return NextResponse.json(data);
 }
