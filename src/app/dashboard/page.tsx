@@ -26,7 +26,7 @@ const Dashboard = () => {
     const [humidity, setHumidity] = useState<number>(0);
     const [light, setLight] = useState<number>(0);
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>([]);
-    const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>();
+    const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>({name: "", status: "", time: ""});
     const getTemperatureColor = useCallback((temporature: number): TemporatureColor => {
         if (temporature < 0) {
             return {
@@ -76,11 +76,9 @@ const Dashboard = () => {
             setLight(data[data.length - 1].light);
             setSensorDatas(data);
         });
-        fetch("/api/action")
-            .then(res => res.json())
-            .then(data =>{
-                setDeviceStatus(data)
-            });
+        fetch("/api/action", {
+            method: "POST"
+        });
     }, []);
 
     useEffect(() => {
@@ -97,6 +95,10 @@ const Dashboard = () => {
             let datas = sensorDatas.slice(-9).concat([data]);
             setSensorDatas(datas);
         })
+
+        // request page -> get current status -> action-request-get
+        // click -> change stauts -> action-request-post
+        // on message -> if(post) -> save to db -> change state
 
         return () => {
             socket.disconnect();
@@ -140,26 +142,22 @@ const Dashboard = () => {
                         />
                     </div>
             <div className="md:flex md:flex-row-reverse md:justify-end md:pl-4">
-                {
-                    deviceStatus ?
-                        <div className="flex justify-center md:w-2/6 md:block">
-                            <div>
-                                <LightItem
-                                    theme={theme}
-                                    icon="lightbulb"
-                                    active={deviceStatus.light}
-                                />
-                            </div>
-                            <div>
-                                <LightItem
-                                    theme={theme}
-                                    icon="wind_power"
-                                    active={deviceStatus.fan}
-                                />
-                            </div>
+                    <div className="flex justify-center md:w-2/6 md:block">
+                        <div>
+                            <LightItem
+                                theme={theme}
+                                icon="lightbulb"
+                                active={deviceStatus.status === "on"}
+                            />
                         </div>
-                    : null
-                }
+                        <div>
+                            <LightItem
+                                theme={theme}
+                                icon="wind_power"
+                                active={deviceStatus.status === "on"}
+                            />
+                        </div>
+                    </div>
                 <div className="w-full md:w-4/6">
                     <Divider />
                         <div>
