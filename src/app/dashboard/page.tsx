@@ -26,6 +26,7 @@ const Dashboard = () => {
     const [humidity, setHumidity] = useState<number>(0);
     const [light, setLight] = useState<number>(0);
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>([]);
+    const [deviceLoading, setDeviceLoading] = useState(true);
     const [ledStatus, setLedStatus] = useState(false);
     const [fanStatus, setFanstatus] = useState(false);
     const getTemperatureColor = useCallback((temporature: number): TemporatureColor => {
@@ -101,7 +102,7 @@ const Dashboard = () => {
             console.log(data);
             switch(data.type){
                 case "led":
-                    setLedStatus(data.led);
+                    setLedStatus(data.status);
                   break;
                 case "fan":
                     setFanstatus(data.status);
@@ -109,6 +110,7 @@ const Dashboard = () => {
                 case "devices":
                     setLedStatus(data.led);
                     setFanstatus(data.fan);
+                    setDeviceLoading(false);
                   break;
                 default:
                   console.log("unknow package");
@@ -157,6 +159,9 @@ const Dashboard = () => {
                         />
                     </div>
             <div className="md:flex md:flex-row-reverse md:justify-end md:pl-4">
+                {
+                    deviceLoading ? null
+                    :
                     <div className="flex justify-center md:w-2/6 md:block">
                         <div>
                             <LightItem
@@ -175,6 +180,7 @@ const Dashboard = () => {
                             />
                         </div>
                     </div>
+                }
                 <div className="w-full md:w-4/6">
                     <Divider />
                         <div>

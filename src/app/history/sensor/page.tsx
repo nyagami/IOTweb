@@ -7,7 +7,7 @@ import { parseUTC } from '@/app/utils/parseUTCTime';
 export default function SensorDataPage(){
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>();
     useEffect(() => {
-        fetch('/api/sensor?num=100')
+        fetch('/api/sensor?num=200')
             .then(res => res.json())
             .then((data: SensorData[]) => {
                 data = data.map((sd) => {

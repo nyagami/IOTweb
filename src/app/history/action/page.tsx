@@ -13,7 +13,7 @@ interface ActionHistory {
 export default function Action(){ 
     const [actionHistories, setActionHistories] = useState<ActionHistory[]>([]);
     useEffect(() => {
-        fetch("/api/action?num=100")
+        fetch("/api/action?num=200")
             .then(res => res.json())
             .then((data: ActionHistory[]) => {
                 data = data.map((ah) => {
@@ -27,15 +27,19 @@ export default function Action(){
     }, []);
     return (
         <div>
-            <HistoryTable
-                columns={[
-                    {key: 'id', label: "ID"},
-                    {key: 'device', label: 'THIẾT BỊ'},
-                    {key: 'status', label: 'TRẠNG THÁI'},
-                    {key: 'time', label: 'THỜI GIAN'}
-                ]}
-                records={actionHistories}
-            />
+            {
+                actionHistories ?
+                    <HistoryTable
+                        columns={[
+                            {key: 'id', label: "ID"},
+                            {key: 'device', label: 'THIẾT BỊ'},
+                            {key: 'status', label: 'TRẠNG THÁI'},
+                            {key: 'time', label: 'THỜI GIAN'}
+                        ]}
+                        records={actionHistories}
+                    />
+                : null
+            }
         </div>
     )
 }

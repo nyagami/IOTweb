@@ -11,7 +11,7 @@ export interface DeviceStatus {
 
 export async function POST(req: NextRequest) {
     const client = mqtt.connect("mqtt://localhost:1883");
-    client.publish("checking_device", "check");
+    client.publish("checking_device", JSON.stringify({data: null}));
     return NextResponse.json({});
 }
 

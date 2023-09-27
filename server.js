@@ -50,7 +50,7 @@ app.prepare().then(() => {
       console.log("wrong message format")
     }
     if(!data) return;
-    console.log("topic", topic);
+    console.log("[topic]", topic);
     const now = new Date(dayjs().utc(true).toISOString());
     if(topic === "sensor"){
       if(data.temperature && data.humidity && data.light){
@@ -63,14 +63,14 @@ app.prepare().then(() => {
         io.emit("sensor", savedData);
       }
     }else if(topic === "device_status"){
-      if(data.type == "led" || data.type == "fan"){
-        prisma.action.create({
+      if(data.type === "led" || data.type === "fan"){
+        await prisma.action.create({
           data: {
             device: data.type,
             status: data.status ? "on" : "off",
             time: now
           }
-        })
+        });
       }
       io.emit("device_status", data);
     }else{
