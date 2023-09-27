@@ -11,13 +11,13 @@ export interface DeviceStatus {
 
 export async function POST(req: NextRequest) {
     const client = mqtt.connect("mqtt://localhost:1883");
-    client.publish("actio-request", "current");
+    client.publish("checking_device", "check");
     return NextResponse.json({});
 }
 
 export async function GET(req: NextRequest) {
     const num = Number(req.nextUrl.searchParams.get("num")) || 10;
-    const data = await prisma.sensorStatus.findMany({
+    const data = await prisma.action.findMany({
         orderBy: {
             time: 'desc'
         },

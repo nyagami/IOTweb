@@ -6,16 +6,17 @@ import { ThemeType } from "@/app/theme/types"
 interface LightItemProps {
     theme: ThemeType,
     icon: string,
-    active: boolean
+    active: boolean,
+    type: string,
 }
 
 const LightItem = ({
     theme,
     icon,
     active,
+    type
 }: LightItemProps
 ) => {
-    const [status, setStatus] = useState(active);
 
     return (
         <div className="h-28 w-36 md:h-64 md:w-5/6 bg-primary-300 pt-4 px-4 m-8 rounded-2xl">
@@ -23,9 +24,15 @@ const LightItem = ({
                 theme={theme}
                 color="success"
                 size="lg"
-                isSelected={status}
-                onValueChange={(isSelected) => {
-                    setStatus(isSelected);
+                isSelected={active}
+                onValueChange={async (isSelected) => {
+                    await fetch("/api/action/request", {
+                        method: "POST",
+                        body: JSON.stringify({
+                            type: type,
+                            status: Number(isSelected)
+                        })
+                    })
                 }}
             />
             <div className="flex w-full justify-center">

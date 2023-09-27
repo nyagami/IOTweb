@@ -26,7 +26,8 @@ const Dashboard = () => {
     const [humidity, setHumidity] = useState<number>(0);
     const [light, setLight] = useState<number>(0);
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>([]);
-    const [deviceStatus, setDeviceStatus] = useState<DeviceStatus>({name: "", status: "", time: ""});
+    const [ledStatus, setLedStatus] = useState(false);
+    const [fanStatus, setFanstatus] = useState(false);
     const getTemperatureColor = useCallback((temporature: number): TemporatureColor => {
         if (temporature < 0) {
             return {
@@ -96,10 +97,24 @@ const Dashboard = () => {
             setSensorDatas(datas);
         })
 
-        // request page -> get current status -> action-request-get
-        // click -> change stauts -> action-request-post
-        // on message -> if(post) -> save to db -> change state
-
+        socket.on("device_status", (data) => {
+            console.log(data);
+            switch(data.type){
+                case "led":
+                    setLedStatus(data.led);
+                  break;
+                case "fan":
+                    setFanstatus(data.status);
+                  break;
+                case "devices":
+                    setLedStatus(data.led);
+                    setFanstatus(data.fan);
+                  break;
+                default:
+                  console.log("unknow package");
+                  return;
+              }
+        });
         return () => {
             socket.disconnect();
         }
@@ -147,14 +162,16 @@ const Dashboard = () => {
                             <LightItem
                                 theme={theme}
                                 icon="lightbulb"
-                                active={deviceStatus.status === "on"}
+                                active={ledStatus}
+                                type="led"
                             />
                         </div>
                         <div>
                             <LightItem
                                 theme={theme}
                                 icon="wind_power"
-                                active={deviceStatus.status === "on"}
+                                active={fanStatus}
+                                type="fan"
                             />
                         </div>
                     </div>

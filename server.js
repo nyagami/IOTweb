@@ -33,10 +33,6 @@ app.prepare().then(() => {
     }
   })
   server
-    .once('error', (err) => {
-      console.error(err)
-      process.exit(1)
-    })
     .listen(port, () => {
       console.log(`> Ready on http://${hostname}:${port}`)
     });
@@ -44,6 +40,8 @@ app.prepare().then(() => {
   const io = new Server(server);
 
   const mqttClient = mqtt.connect("mqtt://localhost:1883");
+  mqttClient.subscribe("sensor");
+  mqttClient.subscribe("device_status");
   mqttClient.on("message", async (topic, payload) => {
     let data = {};
     try{
@@ -52,9 +50,10 @@ app.prepare().then(() => {
       console.log("wrong message format")
     }
     if(!data) return;
+    console.log("topic", topic);
+    const now = new Date(dayjs().utc(true).toISOString());
     if(topic === "sensor"){
       if(data.temperature && data.humidity && data.light){
-        const now = new Date(dayjs().utc(true).toISOString());
         const savedData = await prisma.sensorStatus.create({
           data: {
             ...data,
@@ -63,13 +62,19 @@ app.prepare().then(() => {
         });
         io.emit("sensor", savedData);
       }
-    }else if(topic === "device"){
-      // io.emit("action", data);
+    }else if(topic === "device_status"){
+      if(data.type == "led" || data.type == "fan"){
+        prisma.action.create({
+          data: {
+            device: data.type,
+            status: data.status ? "on" : "off",
+            time: now
+          }
+        })
+      }
+      io.emit("device_status", data);
     }else{
       console.log("unknown topic", topic);
     }
-  })
-  mqttClient.on("error", (error) => {
-    console.log(error);
   })
 })
