@@ -7,8 +7,8 @@ import ApexLineChart from "./components/Charts/LineChart";
 import { Divider } from "@nextui-org/react";
 import { NumberCard } from "./components/Cards";
 import LightItem from "./components/Lights";
+import { LightSkeletion } from "./components/Lights/LightSkeleton";
 import { SensorData } from "../api/sensor/route";
-import { DeviceStatus } from "../api/action/route";
 import { parseUTC } from "../utils/parseUTCTime";
 
 interface TemporatureColor {
@@ -100,94 +100,104 @@ const Dashboard = () => {
 
         socket.on("device_status", (data) => {
             console.log(data);
-            switch(data.type){
+            switch (data.type) {
                 case "led":
                     setLedStatus(data.status);
-                  break;
+                    break;
                 case "fan":
                     setFanstatus(data.status);
-                  break;
+                    break;
                 case "devices":
                     setLedStatus(data.led);
                     setFanstatus(data.fan);
                     setDeviceLoading(false);
-                  break;
+                    break;
                 default:
-                  console.log("unknow package");
-                  return;
-              }
+                    console.log("unknow package");
+                    return;
+            }
         });
         return () => {
             socket.disconnect();
         }
     }, [sensorDatas])
-    
+
     const theme = useTheme();
     return (
         <div style={{
             backgroundColor: theme.background
         }}>
             <div
-                        className="block w-full md:flex justify-evenly py-10"
-                        style={{
-                            padding: 'auto'
-                        }}
-                    >
-                        <NumberCard
-                            title="Nhiệt độ"
-                            num={temperature}
-                            icon="thermostat"
-                            unit="°C"
-                            backgroundImage={temporatureColor.backgroundImage}
-                            boxShadow={temporatureColor.boxShadow}
-                        />
-                        <NumberCard
-                            title="Độ ẩm"
-                            num={humidity}
-                            icon="water_drop"
-                            unit="%"
-                            backgroundImage="linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed)"
-                            boxShadow="0 4px 15px 0 rgba(65, 132, 234, 0.75)"
-                        />
-                        <NumberCard
-                            title="Độ sáng"
-                            num={light}
-                            icon="wb_sunny"
-                            unit="%"
-                            backgroundImage="linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19)"
-                            boxShadow="0 4px 15px 0 rgba(229, 66, 10, 0.75)"
-                        />
-                    </div>
+                className="block w-full md:flex justify-evenly py-10"
+                style={{
+                    padding: 'auto'
+                }}
+            >
+                <NumberCard
+                    title="Nhiệt độ"
+                    num={temperature}
+                    icon="thermostat"
+                    unit="°C"
+                    backgroundImage={temporatureColor.backgroundImage}
+                    boxShadow={temporatureColor.boxShadow}
+                />
+                <NumberCard
+                    title="Độ ẩm"
+                    num={humidity}
+                    icon="water_drop"
+                    unit="%"
+                    backgroundImage="linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed)"
+                    boxShadow="0 4px 15px 0 rgba(65, 132, 234, 0.75)"
+                />
+                <NumberCard
+                    title="Độ sáng"
+                    num={light}
+                    icon="wb_sunny"
+                    unit="%"
+                    backgroundImage="linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19)"
+                    boxShadow="0 4px 15px 0 rgba(229, 66, 10, 0.75)"
+                />
+            </div>
             <div className="md:flex md:flex-row-reverse md:justify-end md:pl-4">
-                {
-                    deviceLoading ? null
-                    :
-                    <div className="flex justify-center md:w-2/6 md:block">
-                        <div>
-                            <LightItem
-                                theme={theme}
-                                icon="lightbulb"
-                                active={ledStatus}
-                                type="led"
-                            />
-                        </div>
-                        <div>
-                            <LightItem
-                                theme={theme}
-                                icon="wind_power"
-                                active={fanStatus}
-                                type="fan"
-                            />
-                        </div>
-                    </div>
-                }
+
+                <div className="flex justify-center md:w-2/6 md:block">
+                    {
+                        deviceLoading ?
+                        (
+                            <div>
+                                <LightSkeletion/>
+                                <LightSkeletion/>
+                            </div>
+                        )
+                        : (
+                            <div>
+                                <div>
+                                    <LightItem
+                                        theme={theme}
+                                        icon="lightbulb"
+                                        active={ledStatus}
+                                        type="led"
+                                    />
+                                </div>
+                                <div>
+                                    <LightItem
+                                        theme={theme}
+                                        icon="wind_power"
+                                        active={fanStatus}
+                                        type="fan"
+                                    />
+                                </div>
+                            </div>
+                        )
+                    }
+                </div>
                 <div className="w-full md:w-4/6">
                     <Divider />
-                        <div>
-                            <ApexLineChart
-                                sensorDatas={sensorDatas}
-                            />
-                        </div>
+                    <div>
+                        <ApexLineChart
+                            sensorDatas={sensorDatas}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
