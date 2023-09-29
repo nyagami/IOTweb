@@ -28,7 +28,7 @@ export default function Action(){
     return (
         <div>
             {
-                actionHistories ?
+                actionHistories.length ?
                     <HistoryTable
                         columns={[
                             {key: 'id', label: "ID"},
