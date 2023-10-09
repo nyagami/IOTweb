@@ -36,7 +36,17 @@ export default function Action(){
                             {key: 'status', label: 'TRẠNG THÁI'},
                             {key: 'time', label: 'THỜI GIAN'}
                         ]}
-                        records={actionHistories}
+                        search={async (term: string) => {
+                            const res = await fetch("/api/action?num=200&key=" + term);
+                            const records: any[] = await res.json();
+                            const timedRecords = records.map(d => {
+                                return {
+                                    ...d,
+                                    time: parseUTC(d.time)
+                                }
+                            })
+                            return timedRecords;
+                        }}
                     />
                 : null
             }

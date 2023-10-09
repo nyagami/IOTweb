@@ -1,41 +1,30 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { parseUTC } from "@/app/utils/parseUTCTime";
 import HistoryTable from "../components/HistoryTable"
-import { SensorData } from '@/app/api/sensor/route';
-import { parseUTC } from '@/app/utils/parseUTCTime';
 
-export default function SensorDataPage(){
-    const [sensorDatas, setSensorDatas] = useState<SensorData[]>();
-    useEffect(() => {
-        fetch('/api/sensor?num=200')
-            .then(res => res.json())
-            .then((data: SensorData[]) => {
-                data = data.map((sd) => {
-                    return {
-                        ...sd,
-                        time: parseUTC(sd.time)
-                    }
-                })
-                setSensorDatas(data);
-            });
-    }, []);
+export default function SensorDataPage() {
     return (
         <div>
-            {
-                sensorDatas ? 
-
-                <HistoryTable
-                    columns={[
-                        {key: 'id', label: "ID"},
-                        {key: 'temperature', label: "NHIỆT ĐỘ"},
-                        {key: 'humidity', label: "ĐỘ ẨM"},
-                        {key: 'light', label: "ĐỘ SÁNG"},
-                        {key: 'time', label: "THỜI GIAN"},
-                    ]}
-                    records={sensorDatas}
-                />
-                : null
-            }
+            <HistoryTable
+                columns={[
+                    { key: 'id', label: "ID" },
+                    { key: 'temperature', label: "NHIỆT ĐỘ" },
+                    { key: 'humidity', label: "ĐỘ ẨM" },
+                    { key: 'light', label: "ĐỘ SÁNG" },
+                    { key: 'time', label: "THỜI GIAN" },
+                ]}
+                search={async (term: string) => {
+                    const res = await fetch("/api/sensor?num=200&key=" + term);
+                    const records: any[] = await res.json();
+                    const timedRecords = records.map(d => {
+                        return {
+                            ...d,
+                            time: parseUTC(d.time)
+                        }
+                    })
+                    return timedRecords;
+                }}
+            />
         </div>
     )
 }
