@@ -16,6 +16,7 @@ const HistoryTable = ({
     search,
 }: HistoryTableProps) => {
     const [page, setPage] = useState(1);
+    const [sourceRecords, setSourceRecords] = useState<Record<string, any>[]>([])
     const [records, setRecords] = useState<Record<string, any>[]>([]);
     const [displayRecords, setDisplayRecords] = useState<Record<string, any>[]>([]);
     const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({column: 'id', direction: 'descending'});
@@ -25,10 +26,15 @@ const HistoryTable = ({
         setDisplayRecords(r.slice((page - 1) * 10, page * 10));
     }, []);
     const onSearch = useCallback(async (term: string) => {
-        const res = await search(term);
+        let res: Record<string, any>[] = [];
+        res = await search(term);
+        if(term === "") setSourceRecords(res);
+        res = res.concat(sourceRecords.filter(r => {
+            return !res.some(apiItem => apiItem.id === r.id) && r.time.includes(term)
+        })).sort((a, b) => b.id - a.id);
         setRecords(res);
         pageDisplay(1, res);
-    }, []);
+    }, [sourceRecords]);
     useEffect(() => {
         onSearch(searchTerm);
     }, []);

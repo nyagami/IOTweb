@@ -23,10 +23,9 @@ export async function GET(req: NextRequest) {
         });
         return NextResponse.json(latest);
     }else{
-        const keyNum = parseInt(key || '');
-        const filter = keyNum ? {
+        let keyNum = parseInt(key || '');
+        const filter = Number.isInteger(keyNum) ? {
             OR: [
-                {id: {equals: keyNum}},
                 {temperature: {equals: keyNum}},
                 {humidity: {equals: keyNum}},
                 {light: {equals: keyNum}},

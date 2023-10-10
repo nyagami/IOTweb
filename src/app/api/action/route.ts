@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET(req: NextRequest) {
-    const num = Number(req.nextUrl.searchParams.get("num")) || 10;
     const key = req.nextUrl.searchParams.get("key") || "";
     const data = await prisma.action.findMany({
         where: {
@@ -28,7 +27,6 @@ export async function GET(req: NextRequest) {
         orderBy: {
             time: 'desc'
         },
-        take: num,
     });
     return NextResponse.json(data);
 }

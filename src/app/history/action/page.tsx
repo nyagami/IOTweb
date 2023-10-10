@@ -37,7 +37,7 @@ export default function Action(){
                             {key: 'time', label: 'THỜI GIAN'}
                         ]}
                         search={async (term: string) => {
-                            const res = await fetch("/api/action?num=200&key=" + term);
+                            const res = await fetch("/api/action?num=1000&key=" + term);
                             const records: any[] = await res.json();
                             const timedRecords = records.map(d => {
                                 return {
