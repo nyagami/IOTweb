@@ -1,3 +1,4 @@
+import { GradientColor } from '@/app/utils/gradientColor';
 import styles from './Card.module.css'
 
 interface NumberCardProps {
@@ -5,8 +6,7 @@ interface NumberCardProps {
     num: number;
     icon: string;
     unit: string;
-    backgroundImage?: string,
-    boxShadow?: string,
+    gradientColor: GradientColor
 }
 
 const NumberCard = ({
@@ -14,8 +14,7 @@ const NumberCard = ({
     num,
     icon,
     unit,
-    backgroundImage,
-    boxShadow,
+    gradientColor,
 }: NumberCardProps) => {
     return (
         <div
@@ -26,8 +25,8 @@ const NumberCard = ({
                 alignItems: 'center',
                 padding: '1rem',
                 backgroundSize: '300% 100%',
-                backgroundImage: backgroundImage,
-                boxShadow: boxShadow,
+                backgroundImage: gradientColor.backgroundImage,
+                boxShadow: gradientColor.boxShadow,
                 cursor: 'pointer',
             }}
         >
