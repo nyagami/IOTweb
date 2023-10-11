@@ -30,7 +30,7 @@ const HistoryTable = ({
         res = await search(term);
         if(term === "") setSourceRecords(res);
         res = res.concat(sourceRecords.filter(r => {
-            return !res.some(apiItem => apiItem.id === r.id) && r.time.includes(term)
+            return !res.some(apiItem => apiItem.id === r.id) && r.time.startsWith(term)
         })).sort((a, b) => b.id - a.id);
         setRecords(res);
         pageDisplay(1, res);

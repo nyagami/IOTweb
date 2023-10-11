@@ -43,7 +43,7 @@ const Dashboard = () => {
         })
     }, []);
     const getData = useCallback(async () => {
-        const res = await fetch('/api/sensor?num=10');
+        const res = await fetch('/api/sensor?num=15');
         const data = (await res.json())?.map((sd: SensorData) => {
             return {
                 ...sd,

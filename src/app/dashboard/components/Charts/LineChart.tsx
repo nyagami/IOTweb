@@ -39,8 +39,8 @@ export default function ApexLineChart({
                 show: true,
                 style: {
                     colors: "#6B859E",
-                }
-            }
+                },
+            },
         },
         yaxis: {
             labels: {
@@ -48,8 +48,8 @@ export default function ApexLineChart({
                     colors: "#6B859E",
                 },
             },
-            min: -10,
-            max: 100,
+            // min: -10,
+            // max: 100,
         },
         legend: {
             labels: {
@@ -79,7 +79,7 @@ export default function ApexLineChart({
             options={chartSettings}
             series={series}
             type="line"
-            height={400}
+            height={500}
         />
     );
 }
