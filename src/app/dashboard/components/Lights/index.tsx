@@ -7,17 +7,19 @@ interface LightItemProps {
     icon: string,
     active: boolean,
     type: string,
+    alert: boolean
 }
 
 const LightItem = ({
     theme,
     icon,
     active,
-    type
+    type,
+    alert
 }: LightItemProps
 ) => {
     return (
-        <div className="h-28 w-36 md:h-64 md:w-5/6 bg-primary-300 pt-4 px-4 m-8 rounded-2xl">
+        <div className={"h-28 w-36 md:h-64 md:w-5/6 bg-primary-300 pt-4 px-4 m-8 rounded-2xl " + (alert ? styles.alert : "")}>
             <SwitchItem
                 theme={theme}
                 color="success"
@@ -33,7 +35,7 @@ const LightItem = ({
                     });
                 }}
             />
-            <div className="flex w-full justify-center">
+            <div className="flex w-full justify-center "  >
                 <span 
                     className={"material-icons " + styles.lightItem + (active ? " text-white": "")}
                 >

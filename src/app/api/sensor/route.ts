@@ -8,6 +8,7 @@ export interface SensorData {
     temperature: number,
     humidity: number,
     light: number,
+    dust: number,
     time: string,
 }
 

@@ -59,6 +59,11 @@ export default function ApexLineChart({
     };
     const series = [
         {
+            name: "Độ bụi",
+            type: "line",
+            data: sensorDatas.map(sd => sd.dust),
+        },
+        {
             name: "Nhiệt độ",
             type: "line",
             data: sensorDatas.map(sd => sd.temperature),
@@ -72,7 +77,8 @@ export default function ApexLineChart({
             name: "Độ sáng",
             type: "line",
             data: sensorDatas.map(sd => sd.light),
-        }
+        },
+        
     ]
     return (
         <ReactApexChart

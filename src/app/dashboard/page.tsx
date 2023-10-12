@@ -1,6 +1,6 @@
 "use client";
 import { useTheme } from "../hooks/useTheme";
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { io } from 'socket.io-client'
 import ApexLineChart from "./components/Charts/LineChart";
 
@@ -16,15 +16,18 @@ interface SensorSaturation {
     temperature: ColorSaturation,
     humidity: ColorSaturation,
     light: ColorSaturation,
+    dust: ColorSaturation,
 }
 
 const Dashboard = () => {
-    const [sensorData, setSensorData] = useState<SensorData>({temperature: 0, humidity: 0, light: 0, time: ""});
+    const [sensorData, setSensorData] = useState<SensorData>({temperature: 0, humidity: 0, light: 0, dust: 0, time: ""});
     const [sensorSaturation, setSensorStaturation] = useState<SensorSaturation>({
         temperature: ColorSaturation.WEAK,
         humidity: ColorSaturation.WEAK,
         light: ColorSaturation.WEAK,
+        dust: ColorSaturation.MEDIUM
     });
+    const [alert, setAlert] = useState(false);
     const [sensorDatas, setSensorDatas] = useState<SensorData[]>([]);
     const [deviceLoading, setDeviceLoading] = useState(true);
     const [ledStatus, setLedStatus] = useState(false);
@@ -39,15 +42,16 @@ const Dashboard = () => {
         setSensorStaturation({
             temperature: getSaturation(data.temperature),
             humidity: getSaturation(data.humidity),
-            light: getSaturation(data.light)
+            light: getSaturation(data.light),
+            dust: getSaturation(data.dust),
         })
     }, []);
     const getData = useCallback(async () => {
-        const res = await fetch('/api/sensor?num=15');
+        const res = await fetch('/api/sensor?num=10');
         const data = (await res.json())?.map((sd: SensorData) => {
             return {
                 ...sd,
-                time: parseUTC(sd.time)
+                time: parseUTC(sd.time),
             }
         });
         return data as SensorData[];
@@ -70,6 +74,8 @@ const Dashboard = () => {
             data.time = parseUTC(data.time);
             setSensorData(data);
             updateSensorSaturation(data);
+            if(data.dust >= 70) setAlert(true); 
+            else setAlert(false);
             let datas = sensorDatas.slice(-9).concat([data]);
             setSensorDatas(datas);
         })
@@ -109,6 +115,14 @@ const Dashboard = () => {
                 }}
             >
                 <NumberCard
+                    title="Độ bụi"
+                    num={sensorData.dust}
+                    icon="radio_button_unchecked"
+                    unit="%"
+                    gradientColor={getGradientColor(ColorHue.BLACK, sensorSaturation.dust)}
+                />
+ 
+                <NumberCard
                     title="Nhiệt độ"
                     num={sensorData.temperature}
                     icon="thermostat"
@@ -126,7 +140,7 @@ const Dashboard = () => {
                     title="Độ sáng"
                     num={sensorData.light}
                     icon="wb_sunny"
-                    unit="%"
+                    unit="lx"
                     gradientColor={getGradientColor(ColorHue.YELLOW, sensorSaturation.light)}
                 />
             </div>
@@ -145,10 +159,12 @@ const Dashboard = () => {
                             <div>
                                 <div>
                                     <LightItem
+
                                         theme={theme}
                                         icon="lightbulb"
                                         active={ledStatus}
                                         type="led"
+                                        alert={alert}
                                     />
                                 </div>
                                 <div>
@@ -157,6 +173,7 @@ const Dashboard = () => {
                                         icon="wind_power"
                                         active={fanStatus}
                                         type="fan"
+                                        alert={alert}
                                     />
                                 </div>
                             </div>

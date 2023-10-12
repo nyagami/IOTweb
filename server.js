@@ -60,6 +60,7 @@ app.prepare().then(() => {
             time: now
           }
         });
+        console.log(savedData);
         io.emit("sensor", savedData);
       }
     }else if(topic === "device_status"){

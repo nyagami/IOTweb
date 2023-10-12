@@ -21,7 +21,7 @@ const NumberCard = ({
             className={styles.card + " relative w-5/6 mx-auto flex md:w-80 mb-4 md:mb-0"}
             style={{
                 height: '8rem',
-                width: '25rem',
+                width: '20rem',
                 borderRadius: '2rem',
                 alignItems: 'center',
                 padding: '1rem',

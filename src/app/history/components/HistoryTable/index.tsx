@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, getKeyValue, SortDescriptor, Input } from "@nextui-org/react"
+import { Select, SelectItem, Table, TableHeader, TableBody, TableColumn, TableRow, TableCell, Pagination, getKeyValue, SortDescriptor, Input } from "@nextui-org/react"
 
 export interface Column {
     key: string,
@@ -15,6 +15,9 @@ const HistoryTable = ({
     columns,
     search,
 }: HistoryTableProps) => {
+    const [displayFilter, setDisplayFilter] = useState(false);
+    const [filterValue, setFilterValue] = useState("id");
+    // console.log(columns);
     const [page, setPage] = useState(1);
     const [sourceRecords, setSourceRecords] = useState<Record<string, any>[]>([])
     const [records, setRecords] = useState<Record<string, any>[]>([]);
@@ -29,9 +32,11 @@ const HistoryTable = ({
         let res: Record<string, any>[] = [];
         res = await search(term);
         if(term === "") setSourceRecords(res);
-        res = res.concat(sourceRecords.filter(r => {
-            return !res.some(apiItem => apiItem.id === r.id) && r.time.startsWith(term)
-        })).sort((a, b) => b.id - a.id);
+        if(displayFilter && term !== ""){
+            res = res.filter((v) => {
+                v[filterValue].toString() === term;
+            })
+        }
         setRecords(res);
         pageDisplay(1, res);
     }, [sourceRecords]);
@@ -51,10 +56,35 @@ const HistoryTable = ({
                     onKeyDown={(e) => {
                         if(e.key === 'Enter'){
                             onSearch(searchTerm);
+                            if(searchTerm) setDisplayFilter(true);
+                            else setDisplayFilter(false);
                         }
                     }}
                 />
-                <Table aria-label="sensor table" className="mx-auto w-full md:w-1/2"
+                {
+                    displayFilter 
+                    ? 
+                    <Select className="h-2 w-40 mb-2 mx-auto"  aria-label="Select"
+                        onSelectionChange={(keys) =>{
+                            const column = Object.values(keys)[0];
+                            setFilterValue(column);
+                            const res = sourceRecords.filter((v) => v[column].toString() === searchTerm);
+                            setDisplayRecords(res);
+                            pageDisplay(page, res);
+                        }}                     
+                    >
+                        {
+                            columns.map((column) => (
+                                <SelectItem key={column.key} aria-label="1" value={column.label}>
+                                    {column.label}
+                                </SelectItem>
+                            ))
+                        }
+                    </Select>
+                    :
+                    null
+                }
+                <Table aria-label="sensor table" className="mt-4 mx-auto w-full md:w-1/2"
                     sortDescriptor={sortDescriptor}
                     onSortChange={(descriptor) => {
                         const sortedRecords = records.sort((a, b) => {

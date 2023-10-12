@@ -7,3 +7,13 @@
         font-size: 10rem;
     }
 }
+
+.alert {
+    background-color: red;
+    animation: mymove 1s infinite;
+}
+
+@keyframes mymove {
+    from {background-color: red;}
+    to {background-color: black;}
+  }

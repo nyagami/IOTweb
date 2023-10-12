@@ -22,5 +22,6 @@ model SensorStatus {
   temperature Int
   humidity Int
   light Int
+  dust Int @default(0)
   time DateTime @default(now())
 }

@@ -1,7 +1,8 @@
 export enum ColorHue {
     RED = "red",
     BLUE = "blue",
-    YELLOW = "yellow"
+    YELLOW = "yellow",
+    BLACK = "black"
 }
 
 export enum ColorSaturation { 
@@ -21,7 +22,13 @@ export function getGradientColor (hue: ColorHue, saturation: ColorSaturation): G
         boxShadow: "0 5px 15px rgba(242, 97, 103, .4)"
     };
     switch(hue){
-        case ColorHue.RED:
+        case ColorHue.BLACK: 
+            gradientColor = {
+                backgroundImage: "linear-gradient(to right, #c4c4c4, #696969, #757474, #2b2b2b)",
+                boxShadow: "0 5px 15px rgba(242, 97, 103, .40)"
+            }
+            break;
+        case ColorHue.RED: 
             if(saturation === ColorSaturation.STRONG){
                 gradientColor = {
                     backgroundImage: "linear-gradient(to right, #f2a68f, #ff030a, #fa5a7d, #f50202)",
