@@ -68,24 +68,32 @@ const Header = () => {
                             )}
                             avatarProps={{
                                 isBordered: true,
-                                src: "https://i1.sndcdn.com/avatars-000337262852-um0hwu-t500x500.jpg",
+                                src: "/avatar/gabriel.jpg",
                                 color: 'primary'
                             }}
                             className="font-bold text-foreground"
                         />
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions" color='primary' variant="faded" >
-                        <DropdownItem textValue="Profile">
-                            <Link className="w-full h-full" href="/profile">Profile</Link>
+                        <DropdownItem textValue="Profile"
+                            onClick={() => open("/profile", "_self")}
+                        >
+                            Profile
                         </DropdownItem>
-                        <DropdownItem textValue="Dashboard">
-                            <Link href="/dashboard" className="w-full h-full">Dashboard</Link>
+                        <DropdownItem textValue="Dashboard"
+                            onClick={() => open("/dashboard", "_self")}
+                        >
+                            Dashboard
                         </DropdownItem>
-                        <DropdownItem textValue="Dữ liệu cảm biến">
-                            <Link href="/history/sensor" className="w-full h-full">Dữ liệu cảm biến</Link>
+                        <DropdownItem textValue="Dữ liệu cảm biến"
+                            onClick={() => open("/history/sensor", "_self")}
+                        >
+                            Dữ liệu cảm biến
                         </DropdownItem>
-                        <DropdownItem textValue="Lịch sử bật tắt">
-                            <Link href="/history/action" className="w-full h-full">Lịch sử bật tắt</Link>
+                        <DropdownItem textValue="Lịch sử bật tắt"
+                            onClick={() => open("/history/action", "_self")}
+                        >
+                            Lịch sử bật tắt
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

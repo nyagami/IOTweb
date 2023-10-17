@@ -151,8 +151,12 @@ const Dashboard = () => {
                         deviceLoading ?
                         (
                             <div>
-                                <LightSkeletion/>
-                                <LightSkeletion/>
+                                <LightSkeletion
+                                    alert={alert}
+                                />
+                                <LightSkeletion
+                                    alert={alert}
+                                />
                             </div>
                         )
                         : (
