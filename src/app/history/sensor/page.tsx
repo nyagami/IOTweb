@@ -8,6 +8,7 @@ export default function SensorDataPage() {
             <HistoryTable
                 columns={[
                     { key: 'id', label: "ID" },
+                    { key: 'dust', label: 'ĐỘ BỤI'},
                     { key: 'temperature', label: "NHIỆT ĐỘ" },
                     { key: 'humidity', label: "ĐỘ ẨM" },
                     { key: 'light', label: "ĐỘ SÁNG" },
