@@ -12,7 +12,7 @@ export default function ApexLineChart({
 }: ChartProps
 ) {
     const chartSettings: ApexOptions = {
-        colors: ["#FF5668", "#4D53E0", "#ffca7a"],
+        colors: ["#c4c4c4", "#FF5668", "#4D53E0", "#ffca7a"],
         dataLabels: {
             enabled: true,
             enabledOnSeries: [0, 1, 2],
@@ -25,8 +25,8 @@ export default function ApexLineChart({
             },
           },
         stroke: {
-            curve: ["straight", "smooth", "smooth"],
-            width: [3, 3, 3]
+            curve: ["straight", "straight", "smooth", "smooth"],
+            width: [3, 3, 3, 3]
         },
         chart: {
             toolbar: {
